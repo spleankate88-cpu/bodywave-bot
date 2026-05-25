@@ -1,11 +1,14 @@
 import os
 import logging
+import tempfile
+from pathlib import Path
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import (
     Application, CommandHandler, CallbackQueryHandler,
     MessageHandler, filters, ContextTypes
 )
 import anthropic
+from gtts import gTTS
 
 # Logging
 logging.basicConfig(level=logging.INFO)
@@ -84,6 +87,10 @@ T = {
         "back_btn": "← Назад",
         "step_label": "Шаг {i} из {total}",
         "type_state": "💬 Напиши как ты себя чувствуешь, и я подберу практику:",
+        "voice_mode_on": "🔊 Голосом",
+        "voice_mode_off": "📝 Текстом",
+        "voice_enabled": "Хорошо, включаю голосовой режим.",
+        "voice_unavailable": "Сейчас голос не получился, поэтому оставляю текст практики.",
     },
     "en": {
         "welcome": (
@@ -147,6 +154,10 @@ T = {
         "back_btn": "← Back",
         "step_label": "Step {i} of {total}",
         "type_state": "💬 Type how you feel and I will find a practice for you:",
+        "voice_mode_on": "🔊 Voice",
+        "voice_mode_off": "📝 Text",
+        "voice_enabled": "Okay, voice mode is on.",
+        "voice_unavailable": "Voice is unavailable right now, so I am showing the practice text.",
     }
 }
 
@@ -753,6 +764,42 @@ def music_text(ctx):
         lines.append("")
     return "\n".join(lines).strip()
 
+def tts_lang(ctx):
+    return "ru" if lang(ctx) == "ru" else "en"
+
+def plain_text_for_voice(text):
+    return (
+        text.replace("*", "")
+        .replace("_", "")
+        .replace("🌊", "")
+        .replace("🌿", "")
+        .replace("💧", "")
+        .replace("🐚", "")
+        .replace("🌀", "")
+        .replace("🌺", "")
+        .replace("⚡", "")
+        .replace("🫧", "")
+        .strip()
+    )
+
+async def send_voice_audio(chat, ctx, text, caption=None):
+    audio_path = None
+    try:
+        voice_text = plain_text_for_voice(text)
+        with tempfile.NamedTemporaryFile(suffix=".mp3", delete=False) as tmp:
+            audio_path = Path(tmp.name)
+
+        gTTS(text=voice_text, lang=tts_lang(ctx)).save(str(audio_path))
+        with audio_path.open("rb") as audio_file:
+            await ctx.bot.send_audio(chat_id=chat.id, audio=audio_file, caption=caption)
+        return True
+    except Exception as exc:
+        logger.warning("Voice generation failed: %s", exc)
+        return False
+    finally:
+        if audio_path:
+            audio_path.unlink(missing_ok=True)
+
 def looks_urgent(text):
     lowered = text.lower()
     urgent_words = [
@@ -909,9 +956,27 @@ async def button(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
             ctx.user_data["step"] = 0
             await show_step(query, ctx)
 
+    # ── Start practice in voice mode ──
+    elif data.startswith("voice_start_"):
+        prac_id = data[12:]
+        l = lang(ctx)
+        all_pracs = PRACTICES[l]["mini"] + PRACTICES[l]["full"]
+        practice = next((p for p in all_pracs if p["id"] == prac_id), None)
+        if practice:
+            ctx.user_data["voice_mode"] = True
+            ctx.user_data["practice"] = practice
+            ctx.user_data["step"] = 0
+            await query.edit_message_text(tx(ctx, "voice_enabled"))
+            await show_step(query, ctx)
+
     # ── Next step ──
     elif data == "next_step":
         ctx.user_data["step"] = ctx.user_data.get("step", 0) + 1
+        await show_step(query, ctx)
+
+    # ── Toggle voice/text mode ──
+    elif data == "toggle_voice":
+        ctx.user_data["voice_mode"] = not ctx.user_data.get("voice_mode", False)
         await show_step(query, ctx)
 
     # ── After practice ──
@@ -964,7 +1029,10 @@ async def show_practice_choice(query, ctx):
         f"*{practice['title']}*\n"
         f"_{practice['subtitle']}_"
     )
-    start_kb = kb([(tx(ctx, "start_btn"), f"start_{practice['id']}")], cols=1)
+    start_kb = kb([
+        (tx(ctx, "start_btn"), f"start_{practice['id']}"),
+        (tx(ctx, "voice_mode_on"), f"voice_start_{practice['id']}"),
+    ], cols=1)
     await query.edit_message_text(text, parse_mode="Markdown", reply_markup=start_kb)
 
 async def show_step(query, ctx):
@@ -990,9 +1058,22 @@ async def show_step(query, ctx):
 
     text = f"_{step_label}_ {progress}\n\n*{title}*\n\n{body}"
     btn_text = tx(ctx, "finish_btn") if is_last else tx(ctx, "next_btn")
-    step_kb = kb([(btn_text, "next_step")], cols=1)
+    voice_btn = tx(ctx, "voice_mode_off") if ctx.user_data.get("voice_mode") else tx(ctx, "voice_mode_on")
+    step_kb = kb([
+        (btn_text, "next_step"),
+        (voice_btn, "toggle_voice"),
+    ], cols=1)
 
-    await query.edit_message_text(text, parse_mode="Markdown", reply_markup=step_kb)
+    if ctx.user_data.get("voice_mode"):
+        short_text = f"_{step_label}_ {progress}\n\n*{title}*"
+        await query.edit_message_text(short_text, parse_mode="Markdown", reply_markup=step_kb)
+        voice_text = f"{step_label}. {title}. {body}"
+        ok = await send_voice_audio(query.message.chat, ctx, voice_text, caption=title)
+        if not ok:
+            await query.message.reply_text(tx(ctx, "voice_unavailable"))
+            await query.message.reply_text(text, parse_mode="Markdown", reply_markup=step_kb)
+    else:
+        await query.edit_message_text(text, parse_mode="Markdown", reply_markup=step_kb)
 
 async def handle_text(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
     """Handle free text input for state description."""
