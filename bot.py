@@ -13,6 +13,7 @@ from gtts import gTTS
 # Logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+logging.getLogger("httpx").setLevel(logging.WARNING)
 
 # Clients
 TELEGRAM_TOKEN = os.environ.get("TELEGRAM_TOKEN")
@@ -22,6 +23,7 @@ anthropic_client = (
     if ANTHROPIC_API_KEY
     else None
 )
+VOICE_DIR = Path(__file__).parent / "voice"
 
 # ── TEXTS ────────────────────────────────────────────────────────────────────
 T = {
@@ -45,6 +47,7 @@ T = {
             "/practices — посмотреть доступные практики\n"
             "/materials — материалы курса\n"
             "/music — музыка для практики\n"
+            "/voice_test — проверить звук\n"
             "/help — помощь\n\n"
             "Если во время практики становится больно, страшно или слишком интенсивно — остановись, "
             "почувствуй опору стоп/пола и сделай несколько спокойных выдохов."
@@ -112,6 +115,7 @@ T = {
             "/practices — see available practices\n"
             "/materials — course materials\n"
             "/music — practice music\n"
+            "/voice_test — test voice audio\n"
             "/help — help\n\n"
             "If a practice becomes painful, frightening, or too intense, stop, feel the support under "
             "your feet/body, and take a few slow exhales."
@@ -791,7 +795,14 @@ async def send_voice_audio(chat, ctx, text, caption=None):
 
         gTTS(text=voice_text, lang=tts_lang(ctx)).save(str(audio_path))
         with audio_path.open("rb") as audio_file:
-            await ctx.bot.send_audio(chat_id=chat.id, audio=audio_file, caption=caption)
+            await ctx.bot.send_audio(
+                chat_id=chat.id,
+                audio=audio_file,
+                caption=caption,
+                filename="bodywave-practice.mp3",
+                title=caption or "BodyWave practice",
+            )
+        logger.info("Voice audio sent successfully")
         return True
     except Exception as exc:
         logger.warning("Voice generation failed: %s", exc)
@@ -799,6 +810,32 @@ async def send_voice_audio(chat, ctx, text, caption=None):
     finally:
         if audio_path:
             audio_path.unlink(missing_ok=True)
+
+def recorded_audio_path(ctx, practice, step_idx):
+    lang_code = lang(ctx)
+    practice_id = practice.get("id", "")
+    base = VOICE_DIR / lang_code / practice_id / f"step_{step_idx + 1}"
+    for ext in (".mp3", ".m4a", ".ogg", ".wav"):
+        candidate = base.with_suffix(ext)
+        if candidate.exists():
+            return candidate
+    return None
+
+async def send_recorded_audio(chat, ctx, audio_path, caption=None):
+    try:
+        with audio_path.open("rb") as audio_file:
+            await ctx.bot.send_audio(
+                chat_id=chat.id,
+                audio=audio_file,
+                caption=caption,
+                filename=audio_path.name,
+                title=caption or "BodyWave practice",
+            )
+        logger.info("Recorded voice audio sent: %s", audio_path)
+        return True
+    except Exception as exc:
+        logger.warning("Recorded voice audio failed: %s", exc)
+        return False
 
 def looks_urgent(text):
     lowered = text.lower()
@@ -869,6 +906,21 @@ async def music_command(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
         music_text(ctx),
         disable_web_page_preview=True
     )
+
+async def voice_test_command(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
+    if lang(ctx) == "en":
+        text = "BodyWave voice test. Take one soft breath and listen to your body."
+        intro = "Sending a short voice test now."
+        caption = "BodyWave voice test"
+    else:
+        text = "Проверка голоса BodyWave. Сделай один мягкий вдох и послушай своё тело."
+        intro = "Сейчас отправлю короткую проверку звука."
+        caption = "Проверка звука BodyWave"
+
+    await update.message.reply_text(intro)
+    ok = await send_voice_audio(update.message.chat, ctx, text, caption=caption)
+    if not ok:
+        await update.message.reply_text(tx(ctx, "voice_unavailable"))
 
 async def button(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
@@ -1067,8 +1119,13 @@ async def show_step(query, ctx):
     if ctx.user_data.get("voice_mode"):
         short_text = f"_{step_label}_ {progress}\n\n*{title}*"
         await query.edit_message_text(short_text, parse_mode="Markdown", reply_markup=step_kb)
-        voice_text = f"{step_label}. {title}. {body}"
-        ok = await send_voice_audio(query.message.chat, ctx, voice_text, caption=title)
+        await query.message.reply_text("🔊 Отправляю аудио..." if lang(ctx) == "ru" else "🔊 Sending audio...")
+        audio_path = recorded_audio_path(ctx, practice, step_idx)
+        if audio_path:
+            ok = await send_recorded_audio(query.message.chat, ctx, audio_path, caption=title)
+        else:
+            voice_text = f"{step_label}. {title}. {body}"
+            ok = await send_voice_audio(query.message.chat, ctx, voice_text, caption=title)
         if not ok:
             await query.message.reply_text(tx(ctx, "voice_unavailable"))
             await query.message.reply_text(text, parse_mode="Markdown", reply_markup=step_kb)
@@ -1134,6 +1191,7 @@ def main():
     app.add_handler(CommandHandler("practices", practices_command))
     app.add_handler(CommandHandler("materials", materials_command))
     app.add_handler(CommandHandler("music", music_command))
+    app.add_handler(CommandHandler("voice_test", voice_test_command))
     app.add_handler(CallbackQueryHandler(button))
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_text))
     logger.info("BodyWave bot started!")
