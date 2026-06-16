@@ -18,9 +18,19 @@ logging.getLogger("httpx").setLevel(logging.WARNING)
 # Clients
 TELEGRAM_TOKEN = os.environ.get("TELEGRAM_TOKEN")
 ANTHROPIC_API_KEY = os.environ.get("ANTHROPIC_API_KEY")
+AI_KEY_PLACEHOLDERS = {"", "changeme", "replace_me", "optional_replace_with_anthropic_key"}
+
+
+def has_anthropic_key():
+    if not ANTHROPIC_API_KEY:
+        return False
+    cleaned = ANTHROPIC_API_KEY.strip()
+    return cleaned.lower() not in AI_KEY_PLACEHOLDERS and cleaned.startswith("sk-")
+
+
 anthropic_client = (
     anthropic.Anthropic(api_key=ANTHROPIC_API_KEY)
-    if ANTHROPIC_API_KEY
+    if has_anthropic_key()
     else None
 )
 VOICE_DIR = Path(__file__).parent / "voice"
@@ -48,6 +58,7 @@ T = {
             "/materials — материалы курса\n"
             "/music — музыка для практики\n"
             "/voice_test — проверить звук\n"
+            "/ai_status — проверить подключение AI\n"
             "/help — помощь\n\n"
             "Если во время практики становится больно, страшно или слишком интенсивно — остановись, "
             "почувствуй опору стоп/пола и сделай несколько спокойных выдохов."
@@ -116,6 +127,7 @@ T = {
             "/materials — course materials\n"
             "/music — practice music\n"
             "/voice_test — test voice audio\n"
+            "/ai_status — check AI connection\n"
             "/help — help\n\n"
             "If a practice becomes painful, frightening, or too intense, stop, feel the support under "
             "your feet/body, and take a few slow exhales."
@@ -1010,6 +1022,27 @@ async def voice_test_command(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
     if not ok:
         await update.message.reply_text(tx(ctx, "voice_unavailable"))
 
+async def ai_status_command(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
+    if anthropic_client is None:
+        if lang(ctx) == "en":
+            text = (
+                "AI is not connected yet.\n\n"
+                "Add a real ANTHROPIC_API_KEY in Railway Variables, then redeploy the bot."
+            )
+        else:
+            text = (
+                "AI пока не подключен.\n\n"
+                "Добавь настоящий ANTHROPIC_API_KEY в Railway Variables, потом перезапусти бота."
+            )
+    else:
+        text = (
+            "AI is connected and ready."
+            if lang(ctx) == "en"
+            else "AI подключен и готов."
+        )
+
+    await update.message.reply_text(text)
+
 async def button(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
@@ -1238,10 +1271,10 @@ async def handle_text(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
     ctx.user_data["awaiting_text"] = False
     user_text = update.message.text
     ctx.user_data["emotion"] = user_text
+    l = lang(ctx)
 
     # Use AI to analyze and suggest
     try:
-        l = lang(ctx)
         if anthropic_client is None:
             raise RuntimeError("ANTHROPIC_API_KEY is not configured")
 
@@ -1280,6 +1313,7 @@ def main():
     app.add_handler(CommandHandler("materials", materials_command))
     app.add_handler(CommandHandler("music", music_command))
     app.add_handler(CommandHandler("voice_test", voice_test_command))
+    app.add_handler(CommandHandler("ai_status", ai_status_command))
     app.add_handler(CallbackQueryHandler(button))
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_text))
     logger.info("BodyWave bot started!")
