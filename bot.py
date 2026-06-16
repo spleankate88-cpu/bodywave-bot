@@ -390,6 +390,38 @@ PRACTICES = {
                 ]
             },
             {
+                "id": "art_of_seeing_movement",
+                "title": "👁 Искусство видеть движение",
+                "subtitle": "Анализ движения · Лабан/BESS · 20 мин",
+                "tags": ["анализ движения", "наблюдение", "лабана", "пространство", "поток", "качество"],
+                "steps": [
+                    ("Настрой наблюдателя 👁",
+                     "Выбери короткий фрагмент движения: танец, прогулку, жест человека в видео "
+                     "или своё движение в зеркале.\n\nПеред наблюдением отметь: какие ожидания, эмоции "
+                     "или оценки уже есть у тебя? На время практики положи их рядом, но не выбрасывай."),
+                    ("Контекст 🌿",
+                     "Спроси: в какой ситуации происходит движение?\n\nЗаметь пространство, музыку, одежду, "
+                     "задачу, состояние, атмосферу. Не делай выводов о человеке. Просто собери условия, "
+                     "в которых движение стало именно таким."),
+                    ("Тело и связи 🧭",
+                     "Теперь смотри только на тело: что движется первым, какие части включены, "
+                     "где центр движения, есть ли связи верх-низ, право-лево, центр-периферия, диагонали.\n\n"
+                     "Отметь повторяющиеся паттерны и зоны, которые почти не используются."),
+                    ("Пространство и кинесфера 🌊",
+                     "Посмотри, где происходит движение: близко к телу или широко, вверх или вниз, "
+                     "по кругам, диагоналям, плоскости пола или вертикали.\n\nНазови 2-3 пространственных "
+                     "особенности без интерпретации."),
+                    ("Качество и поток 💧",
+                     "Теперь смотри на качество: движение лёгкое или сильное, быстрое или продолженное, "
+                     "направленное или гибкое, свободный поток или связанный.\n\nМожно записать одну фразу: "
+                     "'Я вижу больше...' и перечислить качества."),
+                    ("Интеграция 🐚",
+                     "Собери наблюдение в 4 строки: контекст, тело, пространство, качество.\n\nЗатем отдельно "
+                     "напиши одну гипотезу, если она появилась. Так ты отделяешь видимое движение от своей "
+                     "интерпретации."),
+                ]
+            },
+            {
                 "id": "inner_ocean_pulsing",
                 "title": "🌊 Палсинг внутреннего океана",
                 "subtitle": "Внутренний океан · занятие 1 · 20 мин",
@@ -640,11 +672,67 @@ PRACTICES = {
                      "How are you now? What has opened? _5 minutes_"),
                 ]
             },
+            {
+                "id": "art_of_seeing_movement",
+                "title": "👁 The Art of Seeing Movement",
+                "subtitle": "Movement analysis · Laban/BESS · 20 min",
+                "tags": ["movement analysis", "observation", "laban", "space", "flow", "quality"],
+                "steps": [
+                    ("Observer stance 👁",
+                     "Choose a short movement fragment: a dance, a walk, a gesture in a video, "
+                     "or your own movement in a mirror.\n\nBefore watching, notice what expectations, "
+                     "emotions, or judgments are already present. Put them aside for now."),
+                    ("Context 🌿",
+                     "Ask: in what situation does this movement happen?\n\nNotice space, music, clothing, "
+                     "task, state, and atmosphere. Do not conclude anything about the person yet. "
+                     "Just collect the conditions around the movement."),
+                    ("Body and connections 🧭",
+                     "Now watch only the body: what moves first, which parts are involved, where the "
+                     "center of movement is, and whether you see upper-lower, right-left, center-periphery, "
+                     "or diagonal connections.\n\nNotice repeated patterns and unused zones."),
+                    ("Space and kinesphere 🌊",
+                     "Look at where the movement happens: close to the body or wide, upward or downward, "
+                     "in circles, diagonals, the floor plane, or verticality.\n\nName 2-3 spatial features "
+                     "without interpretation."),
+                    ("Quality and flow 💧",
+                     "Now watch quality: light or strong, quick or sustained, direct or flexible, "
+                     "free flow or bound flow.\n\nWrite one sentence: 'I see more...' and list the qualities."),
+                    ("Integration 🐚",
+                     "Gather the observation into 4 lines: context, body, space, quality.\n\nThen write one "
+                     "separate hypothesis if it appears. This keeps visible movement separate from interpretation."),
+                ]
+            },
         ]
     }
 }
 
 COURSE_MATERIALS = [
+    {
+        "lesson": "Искусство видеть движение · теория · 1 лекция · 01.04.2024",
+        "folder": "https://drive.google.com/drive/folders/14_MbLtQG9rcGaFaKplwp1kjBokleCBsl",
+        "items": [
+            "аудио.m4a",
+            "Speaker.mp4",
+            "презентация.pdf",
+            "чат.txt",
+            "practice: art_of_seeing_movement",
+        ],
+    },
+    {
+        "lesson": "Искусство видеть движение · теория · 2 лекция · 08.04.2024",
+        "folder": "https://drive.google.com/drive/folders/1S8Jf3C53IG2I8fZTdSvNZQ09Y90OOhUW",
+        "items": ["аудио.m4a", "Speaker.mp4", "презентация.pdf", "чат.txt"],
+    },
+    {
+        "lesson": "Искусство видеть движение · теория · 3 лекция · 15.04.2024",
+        "folder": "https://drive.google.com/drive/folders/1o1Q1sADtil0u29jp_9BtbFphXDo7YH1i",
+        "items": ["аудио.m4a", "Speaker.mp4", "презентация.pdf", "чат.txt"],
+    },
+    {
+        "lesson": "Искусство видеть движение · теория · 4 лекция · 22.04.2024",
+        "folder": "https://drive.google.com/drive/folders/1HPNTPUDZDu-fzvID1tsfq_yzZfcIESe2",
+        "items": ["аудио.m4a", "Speaker.mp4", "презентация.pdf", "чат.txt"],
+    },
     {
         "lesson": "1 занятие · 15.04.2026",
         "folder": "https://drive.google.com/drive/folders/1erVMSWE-aSt0Z5Il4CgO0q5l52OdMOr7",
