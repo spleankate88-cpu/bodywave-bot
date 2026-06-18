@@ -1,6 +1,7 @@
 import os
 import logging
 import tempfile
+import re
 from pathlib import Path
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import (
@@ -931,12 +932,79 @@ def recorded_full_practice_path(ctx, practice):
             return candidate
     return None
 
+def practice_duration_minutes(practice):
+    text = f"{practice.get('title', '')} {practice.get('subtitle', '')}"
+    match = re.search(r"(\d+)\s*(?:мин|min)", text, re.IGNORECASE)
+    if match:
+        return int(match.group(1))
+    return max(5, len(practice["steps"]) * 2)
+
+def step_durations(practice):
+    total = practice_duration_minutes(practice)
+    steps_count = len(practice["steps"])
+    base = max(1, total // steps_count)
+    remainder = total % steps_count
+    return [base + (1 if idx < remainder else 0) for idx in range(steps_count)]
+
+def duration_phrase(ctx, minutes):
+    if lang(ctx) == "en":
+        return "about 1 minute" if minutes == 1 else f"about {minutes} minutes"
+    if minutes == 1:
+        return "примерно 1 минуту"
+    if 2 <= minutes <= 4:
+        return f"примерно {minutes} минуты"
+    return f"примерно {minutes} минут"
+
+def practice_timeline_text(ctx, practice):
+    durations = step_durations(practice)
+    total = sum(durations)
+    if lang(ctx) == "en":
+        lines = [
+            f"Practice time: about {total} minutes.",
+            "The audio gives instructions; keep moving for the time shown for each step.",
+            "",
+        ]
+    else:
+        lines = [
+            f"Время практики: около {total} минут.",
+            "Аудио даёт инструкции; дальше оставайся в движении по времени каждого шага.",
+            "",
+        ]
+
+    for idx, ((title, _), minutes) in enumerate(zip(practice["steps"], durations), start=1):
+        lines.append(f"{idx}. {title} — {duration_phrase(ctx, minutes)}")
+
+    return "\n".join(lines)
+
 def full_practice_voice_text(ctx, practice):
-    lines = [practice["title"], practice["subtitle"], ""]
-    for idx, (title, body) in enumerate(practice["steps"], start=1):
+    durations = step_durations(practice)
+    total = sum(durations)
+    if lang(ctx) == "en":
+        intro = (
+            f"This practice takes about {total} minutes. "
+            "I will name the time for each step. After the instruction, stay with the movement "
+            "for that time, using your own timer if you need it."
+        )
+    else:
+        intro = (
+            f"Эта практика занимает около {total} минут. "
+            "Я буду называть время каждого шага. После инструкции оставайся в движении это время; "
+            "если нужно, включи таймер рядом."
+        )
+
+    lines = [practice["title"], practice["subtitle"], intro, ""]
+    for idx, ((title, body), minutes) in enumerate(zip(practice["steps"], durations), start=1):
         step_label = tx(ctx, "step_label", i=idx, total=len(practice["steps"]))
         lines.append(f"{step_label}. {title}.")
+        if lang(ctx) == "en":
+            lines.append(f"Time for this step: {duration_phrase(ctx, minutes)}.")
+        else:
+            lines.append(f"На этот шаг: {duration_phrase(ctx, minutes)}.")
         lines.append(body)
+        if lang(ctx) == "en":
+            lines.append("Stay with this movement for the named time, then move to the next step.")
+        else:
+            lines.append("Оставайся в этом движении указанное время, затем переходи к следующему шагу.")
         lines.append("")
     return "\n".join(lines).strip()
 
@@ -986,6 +1054,8 @@ async def send_continuous_practice(query, ctx, practice):
         ctx.user_data["step"] = 0
         await show_step(query, ctx)
         return
+
+    await query.message.reply_text(practice_timeline_text(ctx, practice))
 
     opts = tx(ctx, "after_opts")
     after_kb = kb([(o, f"after_{i}") for i, o in enumerate(opts)], cols=1)
