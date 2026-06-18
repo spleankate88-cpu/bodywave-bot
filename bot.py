@@ -921,6 +921,25 @@ def recorded_audio_path(ctx, practice, step_idx):
             return candidate
     return None
 
+def recorded_full_practice_path(ctx, practice):
+    lang_code = lang(ctx)
+    practice_id = practice.get("id", "")
+    base = VOICE_DIR / lang_code / practice_id / "full"
+    for ext in (".mp3", ".m4a", ".ogg", ".wav"):
+        candidate = base.with_suffix(ext)
+        if candidate.exists():
+            return candidate
+    return None
+
+def full_practice_voice_text(ctx, practice):
+    lines = [practice["title"], practice["subtitle"], ""]
+    for idx, (title, body) in enumerate(practice["steps"], start=1):
+        step_label = tx(ctx, "step_label", i=idx, total=len(practice["steps"]))
+        lines.append(f"{step_label}. {title}.")
+        lines.append(body)
+        lines.append("")
+    return "\n".join(lines).strip()
+
 async def send_recorded_audio(chat, ctx, audio_path, caption=None):
     try:
         with audio_path.open("rb") as audio_file:
@@ -936,6 +955,41 @@ async def send_recorded_audio(chat, ctx, audio_path, caption=None):
     except Exception as exc:
         logger.warning("Recorded voice audio failed: %s", exc)
         return False
+
+async def send_continuous_practice(query, ctx, practice):
+    l = lang(ctx)
+    if l == "en":
+        intro = "I am sending the whole practice as one continuous audio."
+        caption = f"Continuous practice: {practice['title']}"
+    else:
+        intro = "Отправляю всю практику одним непрерывным аудио."
+        caption = f"Непрерывная практика: {practice['title']}"
+
+    await query.edit_message_text(
+        f"*{practice['title']}*\n_{practice['subtitle']}_\n\n{intro}",
+        parse_mode="Markdown"
+    )
+
+    audio_path = recorded_full_practice_path(ctx, practice)
+    if audio_path:
+        ok = await send_recorded_audio(query.message.chat, ctx, audio_path, caption=caption)
+    else:
+        ok = await send_voice_audio(
+            query.message.chat,
+            ctx,
+            full_practice_voice_text(ctx, practice),
+            caption=caption
+        )
+
+    if not ok:
+        await query.message.reply_text(tx(ctx, "voice_unavailable"))
+        ctx.user_data["step"] = 0
+        await show_step(query, ctx)
+        return
+
+    opts = tx(ctx, "after_opts")
+    after_kb = kb([(o, f"after_{i}") for i, o in enumerate(opts)], cols=1)
+    await query.message.reply_text(tx(ctx, "after_q"), reply_markup=after_kb)
 
 def looks_urgent(text):
     lowered = text.lower()
@@ -1139,8 +1193,7 @@ async def button(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
             ctx.user_data["voice_mode"] = True
             ctx.user_data["practice"] = practice
             ctx.user_data["step"] = 0
-            await query.edit_message_text(tx(ctx, "voice_enabled"))
-            await show_step(query, ctx)
+            await send_continuous_practice(query, ctx, practice)
 
     # ── Next step ──
     elif data == "next_step":
