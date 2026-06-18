@@ -1262,12 +1262,6 @@ async def handle_text(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
         )
         return
 
-    if not ctx.user_data.get("awaiting_text"):
-        await update.message.reply_text(
-            tx(ctx, "type_state")
-        )
-        return
-
     ctx.user_data["awaiting_text"] = False
     user_text = update.message.text
     ctx.user_data["emotion"] = user_text
@@ -1293,7 +1287,8 @@ async def handle_text(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
             system=system
         )
         reply = response.content[0].text
-    except Exception:
+    except Exception as exc:
+        logger.warning("AI reply failed: %s", exc)
         reply = "Понял тебя 🌊" if l == "ru" else "I hear you 🌊"
 
     times = tx(ctx, "times")
