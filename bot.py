@@ -2,6 +2,7 @@ import os
 import logging
 import tempfile
 import re
+import json
 from pathlib import Path
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import (
@@ -35,6 +36,7 @@ anthropic_client = (
     else None
 )
 VOICE_DIR = Path(__file__).parent / "voice"
+PRACTICES_JSON = Path(__file__).parent / "practices.json"
 
 # ── TEXTS ────────────────────────────────────────────────────────────────────
 T = {
@@ -71,8 +73,8 @@ T = {
             "и сделай медленный выдох."
         ),
         "paths": [
-            "🌊 Подобрать практику", "🦶 Опора и заземление", "🔥 Сильная эмоция",
-            "🫧 Мягкое движение", "📓 Дневник тела", "ℹ️ О BodyWave"
+            "🌊 Подобрать практику", "🦶 Опора", "🔥 Эмоции",
+            "🫧 Мягкое движение", "💨 Дыхание", "ℹ️ О BodyWave"
         ],
         "p1_q": "Что сейчас ближе?",
         "p1_hints": ["тревога", "усталость", "злость", "пустота", "напряжение", "не знаю"],
@@ -94,8 +96,8 @@ T = {
         "finish_btn": "🌿 Завершить",
         "after_q": "Сделай паузу.\nПочувствуй стопы, дыхание и вес тела.\n\nЧто изменилось хотя бы на 1%?",
         "after_opts": [
-            "стало легче", "стало спокойнее", "больше чувствую тело",
-            "поднялась эмоция", "пока без изменений"
+            "стало спокойнее", "стало мягче", "больше чувствую тело",
+            "появилась энергия", "пока без изменений"
         ],
         "diary_prompt": "Что тело сказало тебе сегодня?",
         "diary_saved": "Спасибо.\nДаже “ничего не почувствовала” — это тоже наблюдение.",
@@ -109,9 +111,15 @@ T = {
         "voice_unavailable": "Сейчас голос не получился, поэтому оставляю текст практики.",
         "about": (
             "*BodyWave* — это соматический бот про движение, эмоции и внутренний океан тела.\n\n"
-            "Он помогает мягко замечать, где живёт напряжение, как тело реагирует на эмоции "
-            "и какое движение сейчас нужно.\n\n"
-            "Здесь нет правильного или неправильного движения. Есть только честный контакт с собой."
+            "Он помогает мягко замечать:\n"
+            "• где живет напряжение\n"
+            "• как тело реагирует на эмоции\n"
+            "• какое движение сейчас нужно\n"
+            "• как через тело возвращать себе опору, мягкость и живость\n\n"
+            "Здесь нет правильного или неправильного движения.\n"
+            "Есть только честный контакт с собой.\n\n"
+            "BodyWave не заменяет психотерапию, медицинскую помощь или работу с врачом.\n"
+            "Это мягкий инструмент для самонаблюдения, движения и контакта с телом."
         ),
     },
     "en": {
@@ -149,8 +157,8 @@ T = {
             "you, and take one slow exhale."
         ),
         "paths": [
-            "🌊 Find a practice", "🦶 Grounding", "🔥 Strong emotion",
-            "🫧 Soft movement", "📓 Body journal", "ℹ️ About BodyWave"
+            "🌊 Find a practice", "🦶 Grounding", "🔥 Emotions",
+            "🫧 Soft movement", "💨 Breath", "ℹ️ About BodyWave"
         ],
         "p1_q": "What feels closest right now?",
         "p1_hints": ["anxiety", "tiredness", "anger", "emptiness", "tension", "not sure"],
@@ -1379,9 +1387,41 @@ def practice_display_subtitle(practice, lang_code):
     return subtitle.strip(" ·") or ("10 минут" if lang_code == "ru" else "10 min")
 
 def all_practices(lang_code):
-    practices = PRACTICES[lang_code]["mini"] + PRACTICES[lang_code]["full"]
     if lang_code == "ru":
-        practices = practices + library_practices()
+        return json_practices()
+    return PRACTICES[lang_code]["mini"] + PRACTICES[lang_code]["full"]
+
+def load_practice_library():
+    try:
+        with PRACTICES_JSON.open("r", encoding="utf-8") as file:
+            return json.load(file)
+    except Exception as exc:
+        logger.warning("Practice JSON failed: %s", exc)
+        return []
+
+def json_practices():
+    practices = []
+    for item in load_practice_library():
+        practices.append({
+            "id": item["id"],
+            "title": item["title"],
+            "subtitle": f"{item['category']} · {item['duration']} мин",
+            "category": item["category"],
+            "duration": item["duration"],
+            "tags": item["tags"],
+            "instruction": item["instruction"],
+            "reflection": item["reflection"],
+            "steps": [
+                (
+                    "Настройка",
+                    "Выбери удобное положение.\n"
+                    "Почувствуй стопы, дыхание и вес тела.\n\n"
+                    "Двигайся без оценки. Просто замечай, что тело уже говорит.",
+                ),
+                (item["title"], item["instruction"]),
+                ("Рефлексия", item["reflection"]),
+            ],
+        })
     return practices
 
 def library_practices():
@@ -1678,6 +1718,8 @@ def pick_practice(user_state, lang_code):
     for practice in pool:
         meta = practice_meta(practice)
         searchable_tags = [tag.lower() for tag in practice.get("tags", [])]
+        searchable_tags.append(str(practice.get("category", "")).lower())
+        searchable_tags.append(str(practice.get("title", "")).lower())
         score = 0
 
         if emotion and emotion != "не знаю":
@@ -1802,25 +1844,28 @@ async def button(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
             await show_emotion_picker(query, ctx)
 
         elif path == 1:  # опора
-            ctx.user_data["quality"] = "опора"
-            ctx.user_data["emotion"] = "тревога"
-            await show_body_picker(query, ctx)
+            await show_category_practices(query, ctx, "🦶 Опора и заземление")
 
-        elif path == 2:  # сильная эмоция
-            ctx.user_data["quality"] = "выпускание"
-            await show_emotion_picker(query, ctx)
+        elif path == 2:  # эмоции
+            await show_category_practices(query, ctx, "🔥 Сильные эмоции")
 
         elif path == 3:  # мягкое движение
-            ctx.user_data["quality"] = "мягкость"
-            ctx.user_data["emotion"] = "не знаю"
-            await show_body_picker(query, ctx)
+            await show_category_practices(query, ctx, "🫧 Мягкое движение")
 
-        elif path == 4:  # дневник тела
-            diary_kb = kb([(o, f"after_{i}") for i, o in enumerate(tx(ctx, "after_opts"))], cols=1)
-            await query.edit_message_text(tx(ctx, "diary_prompt"), reply_markup=diary_kb)
+        elif path == 4:  # дыхание
+            await show_category_practices(query, ctx, "💨 Дыхание и восстановление")
 
         elif path == 5:  # о BodyWave
             await query.edit_message_text(tx(ctx, "about"), parse_mode="Markdown", reply_markup=paths_kb(ctx))
+
+    # ── Direct practice from category ──
+    elif data.startswith("catprac_"):
+        prac_id = data[8:]
+        practice = next((p for p in all_practices(lang(ctx)) if p["id"] == prac_id), None)
+        if practice:
+            ctx.user_data["practice"] = practice
+            ctx.user_data["step"] = 0
+            await show_practice_choice(query, ctx, practice=practice)
 
     # ── Hint (quick emotion) ──
     elif data.startswith("hint_"):
@@ -1919,6 +1964,12 @@ async def show_body_picker(query, ctx):
     body_kb = kb([(area, f"body_{i}") for i, area in enumerate(areas)], cols=2)
     await query.edit_message_text(tx(ctx, "p2_q"), reply_markup=body_kb)
 
+async def show_category_practices(query, ctx, category):
+    practices = [p for p in all_practices(lang(ctx)) if p.get("category") == category]
+    buttons = [(p["title"], f"catprac_{p['id']}") for p in practices]
+    buttons.append((tx(ctx, "back_btn"), "restart"))
+    await query.edit_message_text(category, reply_markup=kb(buttons, cols=1))
+
 async def show_time_picker(query, ctx):
     times = tx(ctx, "times")
     time_kb = kb([(t, f"time_{i}") for i, t in enumerate(times)], cols=1)
@@ -1927,10 +1978,12 @@ async def show_time_picker(query, ctx):
         reply_markup=time_kb
     )
 
-async def show_practice_choice(query, ctx):
-    await query.edit_message_text(tx(ctx, "analyzing"))
+async def show_practice_choice(query, ctx, practice=None):
+    if practice is None:
+        await query.edit_message_text(tx(ctx, "analyzing"))
     l = lang(ctx)
-    practice, ptype = pick_practice(ctx.user_data, l)
+    if practice is None:
+        practice, ptype = pick_practice(ctx.user_data, l)
     ctx.user_data["practice"] = practice
 
     text = (
@@ -2012,9 +2065,9 @@ async def handle_text(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
         system = (
             "Ты мягкий соматический помощник BodyWave. "
             "Пользователь описал своё состояние. "
-            "Ответь 1-2 короткими тёплыми фразами: что можно заметить в теле, без диагнозов и обещаний лечения. "
+            "Ответь 1-2 короткими тёплыми фразами: что можно заметить в теле, без медицинских выводов и обещаний. "
             "Затем скажи, что подберёшь мягкую практику. "
-            "Не используй слова: диагноз, блок, травма, лечение, психосоматика. "
+            "Не используй клинический или учебный тон. "
             "Отвечай на языке: " + language_name
         )
         response = anthropic_client.messages.create(
