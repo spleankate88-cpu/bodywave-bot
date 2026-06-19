@@ -812,6 +812,403 @@ MUSIC_PLAYLISTS = [
     }
 ]
 
+BODYWAVE_CONTENT_LIBRARY = [
+    {
+        "id": "bw_body_breath",
+        "title": "Дыхание тела",
+        "category": "Bartenieff",
+        "duration": 5,
+        "tags": ["дыхание", "тревога", "мягкость", "грудь"],
+        "instruction": (
+            "Ляг или сядь удобно.\n"
+            "Положи ладони на ребра.\n"
+            "Заметь, как дыхание расширяет тело во все стороны.\n"
+            "Не меняй дыхание.\n"
+            "Просто следуй за ним."
+        ),
+        "reflection": "Где дыхание было наиболее живым?",
+    },
+    {
+        "id": "bw_breath_pelvis",
+        "title": "Дыхание и таз",
+        "category": "Bartenieff",
+        "duration": 5,
+        "tags": ["таз", "центр", "опора", "дыхание"],
+        "instruction": (
+            "Представь, что вдох доходит до таза.\n"
+            "На выдохе почувствуй тяжесть таза.\n"
+            "Медленно повтори несколько циклов."
+        ),
+        "reflection": "Что изменилось в ощущении центра?",
+    },
+    {
+        "id": "bw_head_tail",
+        "title": "Голова-хвост",
+        "category": "Bartenieff",
+        "duration": 5,
+        "tags": ["spinal", "позвоночник", "волна", "мягкость"],
+        "instruction": (
+            "Представь связь между макушкой и копчиком.\n"
+            "Мягко округляй и удлиняй позвоночник.\n"
+            "Следуй за движением волны."
+        ),
+        "reflection": "Какая часть позвоночника хочет больше движения?",
+    },
+    {
+        "id": "bw_spinal_wave",
+        "title": "Позвоночная волна",
+        "category": "Bartenieff",
+        "duration": 5,
+        "tags": ["волна", "текучесть", "позвоночник"],
+        "instruction": (
+            "Позволь движению начаться из копчика.\n"
+            "Проведи волну через весь позвоночник.\n"
+            "Двигайся без усилия."
+        ),
+        "reflection": "Где волна останавливалась?",
+    },
+    {
+        "id": "bw_pelvis_heels",
+        "title": "Таз и пятки",
+        "category": "Bartenieff",
+        "duration": 5,
+        "tags": ["опора", "ноги", "таз", "grounding"],
+        "instruction": (
+            "Перенеси внимание в пятки.\n"
+            "Заметь связь таза и пола.\n"
+            "Позволь весу стекать вниз."
+        ),
+        "reflection": "Где опора стала яснее?",
+    },
+    {
+        "id": "bw_pelvis_crown",
+        "title": "Таз и макушка",
+        "category": "Bartenieff",
+        "duration": 5,
+        "tags": ["вертикаль", "таз", "макушка", "опора"],
+        "instruction": (
+            "Почувствуй ось между тазом и макушкой.\n"
+            "Медленно двигайся вдоль этой линии.\n"
+            "Пусть позвоночник ищет мягкую вертикаль."
+        ),
+        "reflection": "Где вертикаль стала живой, а где пока жёсткой?",
+    },
+    {
+        "id": "bw_inner_knee_paths",
+        "title": "Внутренние коленные пути",
+        "category": "Bartenieff",
+        "duration": 5,
+        "tags": ["ноги", "устойчивость", "колени", "опора"],
+        "instruction": (
+            "Сядь или встань удобно.\n"
+            "Медленно сгибай и отпускай колени.\n"
+            "Представь внутренние дорожки от стоп к тазу.\n"
+            "Пусть движение будет небольшим и ясным."
+        ),
+        "reflection": "Какая нога сейчас чувствует больше устойчивости?",
+    },
+    {
+        "id": "bw_weight_shift",
+        "title": "Перенос веса",
+        "category": "Bartenieff",
+        "duration": 5,
+        "tags": ["balance", "grounding", "опора", "ноги"],
+        "instruction": (
+            "Встань удобно.\n"
+            "Медленно переноси вес с одной стопы на другую.\n"
+            "Почувствуй, как тело выбирает равновесие без спешки."
+        ),
+        "reflection": "Где перенос веса стал мягче?",
+    },
+    {
+        "id": "bw_torso_rotation",
+        "title": "Ротация корпуса",
+        "category": "Bartenieff",
+        "duration": 5,
+        "tags": ["спираль", "корпус", "позвоночник", "текучесть"],
+        "instruction": (
+            "Почувствуй центр тела.\n"
+            "Мягко поверни корпус вправо и влево.\n"
+            "Не тяни движение силой.\n"
+            "Позволь спирали сама найти объём."
+        ),
+        "reflection": "В какую сторону тело поворачивалось легче?",
+    },
+    {
+        "id": "bw_three_dimensional_breath",
+        "title": "Трехмерное дыхание",
+        "category": "Bartenieff",
+        "duration": 5,
+        "tags": ["дыхание", "расширение", "грудь", "мягкость"],
+        "instruction": (
+            "Положи внимание в грудную клетку, спину и бока.\n"
+            "Заметь, как вдох расширяет тело не только вперёд, но и в стороны, назад, вниз.\n"
+            "Пусть дыхание станет объёмным."
+        ),
+        "reflection": "В каком направлении дыханию было больше места?",
+    },
+    {
+        "id": "bw_yield_support",
+        "title": "Yield — опора",
+        "category": "Developmental patterns",
+        "duration": 7,
+        "tags": ["безопасность", "опора", "усталость", "пустота"],
+        "instruction": (
+            "Ляг на спину.\n"
+            "Почувствуй поддержку поверхности.\n"
+            "Позволь телу отдать вес земле."
+        ),
+        "reflection": "Насколько ты можешь позволить себе быть поддержанной?",
+    },
+    {
+        "id": "bw_push_boundaries",
+        "title": "Push — отталкивание",
+        "category": "Developmental patterns",
+        "duration": 5,
+        "tags": ["границы", "злость", "энергия", "руки"],
+        "instruction": (
+            "Упрись ладонями в стену.\n"
+            "Почувствуй силу ответа.\n"
+            "Заметь возникающую энергию."
+        ),
+        "reflection": "Что изменилось в ощущении границ?",
+    },
+    {
+        "id": "bw_reach_desire",
+        "title": "Reach — тянуться",
+        "category": "Developmental patterns",
+        "duration": 5,
+        "tags": ["желание", "цель", "руки", "энергия"],
+        "instruction": (
+            "Почувствуй центр тела.\n"
+            "Медленно потянись рукой, взглядом или всем телом к чему-то важному.\n"
+            "Не спеши достигать.\n"
+            "Заметь само желание тянуться."
+        ),
+        "reflection": "К чему тело хотело приблизиться?",
+    },
+    {
+        "id": "bw_pull_resource",
+        "title": "Pull — притягивать",
+        "category": "Developmental patterns",
+        "duration": 5,
+        "tags": ["ресурс", "контакт", "руки", "опора"],
+        "instruction": (
+            "Представь перед собой ресурс: тепло, поддержку, воздух, образ.\n"
+            "Медленно притяни его к себе руками.\n"
+            "Почувствуй, как тело принимает."
+        ),
+        "reflection": "Что было легче: тянуться или принимать?",
+    },
+    {
+        "id": "bw_yield_push",
+        "title": "Yield-Push",
+        "category": "Developmental patterns",
+        "duration": 7,
+        "tags": ["опора", "действие", "ноги", "границы"],
+        "instruction": (
+            "Сначала почувствуй опору и отдай вес поверхности.\n"
+            "Потом мягко оттолкнись ладонью, стопой или всем телом.\n"
+            "Найди связь: сначала поддержка, потом действие."
+        ),
+        "reflection": "Как меняется действие, когда перед ним есть опора?",
+    },
+    {
+        "id": "bw_push_reach",
+        "title": "Push-Reach",
+        "category": "Developmental patterns",
+        "duration": 7,
+        "tags": ["инициатива", "границы", "желание", "энергия"],
+        "instruction": (
+            "Оттолкнись от пола, стены или воздуха.\n"
+            "Из этого отталкивания позволь телу потянуться дальше.\n"
+            "Почувствуй инициативу без напряжения."
+        ),
+        "reflection": "Где появилась энергия для шага вперёд?",
+    },
+    {
+        "id": "bw_reach_pull",
+        "title": "Reach-Pull",
+        "category": "Developmental patterns",
+        "duration": 7,
+        "tags": ["контакт", "ресурс", "руки", "мягкость"],
+        "instruction": (
+            "Потянись к пространству, человеку, образу или ресурсу.\n"
+            "Затем мягко притяни это к себе.\n"
+            "Пусть движение будет как вдох и выдох контакта."
+        ),
+        "reflection": "Что тело хотело пригласить ближе?",
+    },
+    {
+        "id": "bw_core_distal_star",
+        "title": "Core-Distal звезда",
+        "category": "Developmental patterns",
+        "duration": 7,
+        "tags": ["расширение", "центр", "конечности", "энергия"],
+        "instruction": (
+            "Представь тело звездой.\n"
+            "Расширяйся от центра к конечностям.\n"
+            "Возвращайся обратно."
+        ),
+        "reflection": "Где расширение было самым живым?",
+    },
+    {
+        "id": "bw_core_distal_pulse",
+        "title": "Core-Distal пульсация",
+        "category": "Developmental patterns",
+        "duration": 7,
+        "tags": ["пульсация", "центр", "расширение", "течение"],
+        "instruction": (
+            "Почувствуй центр тела.\n"
+            "На вдохе расширяйся к рукам, ногам, голове и хвосту.\n"
+            "На выдохе возвращайся обратно к центру.\n"
+            "Пусть тело пульсирует как морская звезда."
+        ),
+        "reflection": "Что приятнее сейчас: расширяться или возвращаться?",
+    },
+    {
+        "id": "bw_head_tail_pattern",
+        "title": "Head-Tail",
+        "category": "Developmental patterns",
+        "duration": 7,
+        "tags": ["позвоночник", "spinal", "голова", "копчик"],
+        "instruction": (
+            "Почувствуй две точки: макушку и копчик.\n"
+            "Позволь им приближаться и отдаляться.\n"
+            "Двигайся как мягкая линия, которая умеет округляться и удлиняться."
+        ),
+        "reflection": "Где связь головы и хвоста стала яснее?",
+    },
+    {
+        "id": "bw_upper_lower",
+        "title": "Upper-Lower",
+        "category": "Developmental patterns",
+        "duration": 7,
+        "tags": ["верх", "низ", "ноги", "опора"],
+        "instruction": (
+            "Раздели внимание между верхом и низом тела.\n"
+            "Сначала двигай только ноги и таз.\n"
+            "Потом только руки, грудь и голову.\n"
+            "Затем дай верхнему и нижнему телу снова встретиться."
+        ),
+        "reflection": "Что сейчас ведёт движение: верх или низ?",
+    },
+    {
+        "id": "bw_body_half",
+        "title": "Body Half",
+        "category": "Developmental patterns",
+        "duration": 7,
+        "tags": ["половина тела", "право", "лево", "устойчивость"],
+        "instruction": (
+            "Почувствуй правую половину тела, затем левую.\n"
+            "Медленно двигай одной стороной, пока другая отдыхает.\n"
+            "Потом поменяй стороны.\n"
+            "Заметь, как тело собирает себя целиком."
+        ),
+        "reflection": "Какая сторона сейчас звучит громче?",
+    },
+    {
+        "id": "bw_cross_lateral",
+        "title": "Cross Lateral",
+        "category": "Developmental patterns",
+        "duration": 7,
+        "tags": ["диагональ", "координация", "ноги", "руки"],
+        "instruction": (
+            "Соедини правую руку и левую ногу, затем левую руку и правую ногу.\n"
+            "Двигайся медленно, через диагонали.\n"
+            "Пусть мозг и тело договариваются без спешки."
+        ),
+        "reflection": "Какая диагональ была понятнее?",
+    },
+    {
+        "id": "bw_diagonal_walk",
+        "title": "Диагональная ходьба",
+        "category": "Developmental patterns",
+        "duration": 7,
+        "tags": ["диагональ", "ходьба", "опора", "координация"],
+        "instruction": (
+            "Начни медленную ходьбу.\n"
+            "Заметь связь правой руки и левой ноги, левой руки и правой ноги.\n"
+            "Пусть шаг станет текучим и внимательным."
+        ),
+        "reflection": "Как изменилась походка, когда ты заметила диагонали?",
+    },
+    {
+        "id": "bw_spiral_movement",
+        "title": "Спиральное движение",
+        "category": "Developmental patterns",
+        "duration": 7,
+        "tags": ["спираль", "позвоночник", "текучесть", "таз"],
+        "instruction": (
+            "Позволь движению начаться как маленькая спираль.\n"
+            "Пусть она проходит через таз, позвоночник, плечи и взгляд.\n"
+            "Не делай форму красивой.\n"
+            "Ищи живую скрученность и раскручивание."
+        ),
+        "reflection": "Где спираль дала больше свободы?",
+    },
+    {
+        "id": "bw_blood_flow_author",
+        "title": "Поток крови",
+        "category": "Внутренние потоки",
+        "duration": 10,
+        "tags": ["кровь", "энергия", "ритм", "течение"],
+        "instruction": (
+            "Представь, что кровь движется по всему телу.\n"
+            "Если бы кровь могла танцевать, какой был бы её ритм?"
+        ),
+        "reflection": "Где в теле стало больше тепла или живости?",
+    },
+    {
+        "id": "bw_lymph_flow_author",
+        "title": "Поток лимфы",
+        "category": "Внутренние потоки",
+        "duration": 10,
+        "tags": ["лимфа", "мягкость", "течение", "плечи"],
+        "instruction": (
+            "Двигайся очень медленно.\n"
+            "Как будто под кожей течет теплая вода."
+        ),
+        "reflection": "Где появилось больше мягкости под кожей?",
+    },
+    {
+        "id": "bw_csf_flow_author",
+        "title": "Поток ликвора",
+        "category": "Внутренние потоки",
+        "duration": 10,
+        "tags": ["ликвор", "позвоночник", "мягкость", "тишина"],
+        "instruction": (
+            "Почувствуй пространство вокруг позвоночника.\n"
+            "Представь мягкое внутреннее море."
+        ),
+        "reflection": "Что изменилось в ощущении позвоночника?",
+    },
+    {
+        "id": "bw_fat_flow_author",
+        "title": "Поток жира",
+        "category": "Внутренние потоки",
+        "duration": 10,
+        "tags": ["жир", "мягкость", "ткань", "принятие"],
+        "instruction": (
+            "Разреши телу быть мягким.\n"
+            "Позволь тканям двигаться свободно."
+        ),
+        "reflection": "Где телу стало легче быть мягким?",
+    },
+    {
+        "id": "bw_seaweed_spine",
+        "title": "Водоросль",
+        "category": "Внутренние потоки",
+        "duration": 10,
+        "tags": ["водоросль", "позвоночник", "волна", "текучесть"],
+        "instruction": (
+            "Представь позвоночник как водоросль.\n"
+            "Течение двигает тебя во всех направлениях."
+        ),
+        "reflection": "Где в теле появилось больше свободы?",
+    },
+]
+
 PRACTICE_UI = {
     "grounding": {
         "ru": ("🦶 Мягкая опора", "7 минут"),
@@ -969,6 +1366,10 @@ def practice_display_title(practice, lang_code):
     return practice["title"]
 
 def practice_display_subtitle(practice, lang_code):
+    if practice.get("category") and practice.get("duration"):
+        duration = practice["duration"]
+        unit = "минут" if lang_code == "ru" else "min"
+        return f"{duration} {unit}"
     meta = practice_meta(practice)
     if lang_code in meta:
         return meta[lang_code][1]
@@ -978,7 +1379,32 @@ def practice_display_subtitle(practice, lang_code):
     return subtitle.strip(" ·") or ("10 минут" if lang_code == "ru" else "10 min")
 
 def all_practices(lang_code):
-    return PRACTICES[lang_code]["mini"] + PRACTICES[lang_code]["full"]
+    practices = PRACTICES[lang_code]["mini"] + PRACTICES[lang_code]["full"]
+    if lang_code == "ru":
+        practices = practices + library_practices()
+    return practices
+
+def library_practices():
+    practices = []
+    for item in BODYWAVE_CONTENT_LIBRARY:
+        practices.append({
+            "id": item["id"],
+            "title": item["title"],
+            "subtitle": f"{item['category']} · {item['duration']} мин",
+            "category": item["category"],
+            "duration": item["duration"],
+            "tags": item["tags"],
+            "steps": [
+                (
+                    "Настройка",
+                    "Выбери удобное положение. Почувствуй стопы, дыхание и вес тела.\n\n"
+                    "Двигайся без оценки, как будто входишь во внутренний океан.",
+                ),
+                (item["title"], item["instruction"]),
+                ("Рефлексия", item["reflection"]),
+            ],
+        })
+    return practices
 
 def paths_kb(ctx):
     paths = tx(ctx, "paths")
@@ -991,11 +1417,10 @@ def practices_text(ctx):
     l = lang(ctx)
     lines = [tx(ctx, "practices_title"), ""]
 
-    for section in ("mini", "full"):
-        for practice in PRACTICES[l][section]:
-            lines.append(f"*{practice_display_title(practice, l)}*")
-            lines.append(f"_{practice_display_subtitle(practice, l)}_")
-            lines.append("")
+    for practice in all_practices(l):
+        lines.append(f"*{practice_display_title(practice, l)}*")
+        lines.append(f"_{practice_display_subtitle(practice, l)}_")
+        lines.append("")
 
     return "\n".join(lines).strip()
 
@@ -1261,7 +1686,7 @@ def pick_practice(user_state, lang_code):
 
         if body_area and body_area != "не знаю":
             normalized_body = body_area.replace(" / ", " ").replace("/", " ")
-            body_tags = " ".join(item.lower() for item in meta.get("body_area", []))
+            body_tags = " ".join(item.lower() for item in meta.get("body_area", []) + searchable_tags)
             if any(part in body_tags for part in normalized_body.split()):
                 score += 3
 
