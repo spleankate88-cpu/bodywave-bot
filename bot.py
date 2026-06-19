@@ -40,29 +40,27 @@ VOICE_DIR = Path(__file__).parent / "voice"
 T = {
     "ru": {
         "welcome": (
-            "Привет! Я *BodyWave* 🌊\n\n"
-            "Твой помощник по танцевально‑двигательной терапии.\n"
-            "Помогу тебе снять напряжение, заземлиться и почувствовать себя лучше "
-            "через простые практики движения.\n\n"
-            "Как хочешь начать сегодня?"
+            "Привет, я *BodyWave* 🌊\n\n"
+            "Я помогу тебе услышать тело через движение, дыхание и образы.\n\n"
+            "Здесь не нужно танцевать красиво.\n"
+            "Важно только заметить, что тело уже говорит.\n\n"
+            "Что тебе сейчас нужно?"
         ),
         "safety_note": (
-            "\n\n_Важно: BodyWave не заменяет психотерапию, врача или экстренную помощь. "
-            "Выбирай только те движения, которые безопасны для твоего тела._"
+            "\n\n_BodyWave не заменяет психотерапию, медицинскую помощь или работу с врачом. "
+            "Это мягкий соматический инструмент для самонаблюдения, движения и контакта с телом._"
         ),
         "help": (
-            "*BodyWave* помогает подобрать короткую телесную практику по состоянию, эмоции или запросу.\n\n"
+            "*BodyWave* помогает мягко вернуться в тело через движение, дыхание и образы.\n\n"
             "Команды:\n"
-            "/start — выбрать язык и начать заново\n"
             "/menu — открыть главное меню\n"
             "/practices — посмотреть доступные практики\n"
-            "/materials — материалы курса\n"
             "/music — музыка для практики\n"
             "/voice_test — проверить звук\n"
+            "/about — о BodyWave\n"
             "/ai_status — проверить подключение AI\n"
             "/help — помощь\n\n"
-            "Если во время практики становится больно, страшно или слишком интенсивно — остановись, "
-            "почувствуй опору стоп/пола и сделай несколько спокойных выдохов."
+            "Если тебе очень плохо, есть паника, травма или сильные симптомы — лучше обратиться к специалисту."
         ),
         "practices_title": "*Доступные практики BodyWave:*",
         "emergency": (
@@ -72,40 +70,49 @@ T = {
             "А сейчас попробуй сделать самое простое: поставь стопы на пол, назови 5 предметов вокруг "
             "и сделай медленный выдох."
         ),
-        "paths": ["🌿 Как я сейчас", "💧 Что я чувствую", "🌺 У меня запрос"],
-        "p1_q": "Опиши в нескольких словах, как ты сейчас себя чувствуешь:\n_(напиши текстом или выбери ниже)_",
-        "p1_hints": ["Устал(а)", "Тревожусь", "Злюсь", "Хочу текучести"],
-        "p2_q": "Что ты сейчас чувствуешь?\nВыбери одно или несколько:",
-        "emotions": [
-            "Тревога 🌀", "Усталость 🍂", "Злость 🌋", "Напряжение ⚡",
-            "Грусть 🌧", "Пустота 🌫", "Стресс 🌊", "Текучесть 🌊"
+        "paths": [
+            "🌊 Подобрать практику", "🦶 Опора и заземление", "🔥 Сильная эмоция",
+            "🫧 Мягкое движение", "📓 Дневник тела", "ℹ️ О BodyWave"
         ],
-        "p3_q": "Что тебя беспокоит больше всего?",
+        "p1_q": "Что сейчас ближе?",
+        "p1_hints": ["тревога", "усталость", "злость", "пустота", "напряжение", "не знаю"],
+        "p2_q": "Где это больше всего ощущается в теле?",
+        "emotions": [
+            "тревога", "усталость", "злость", "пустота", "напряжение", "не знаю"
+        ],
+        "body_areas": ["грудь", "живот", "плечи / шея", "челюсть", "таз", "ноги", "не знаю"],
+        "p3_q": "Что телу сейчас ближе?",
         "topics": [
-            "🌊 Стресс и работа", "🌀 Тревога", "🌺 Отношения",
-            "⚡ Напряжение в теле", "🌊 Внутренний океан", "🌿 Просто хочу подвигаться"
+            "опора", "мягкость", "выпускание", "течение", "энергия"
         ],
         "time_q": "Сколько у тебя времени?",
-        "times": ["🐚 5–10 минут", "🌿 15–20 минут", "🌊 30+ минут"],
-        "analyzing": "🌊 Подбираю практику для тебя...",
+        "times": ["3 минуты", "5 минут", "10 минут", "15 минут"],
+        "analyzing": "Слушаю твой внутренний океан...",
         "practice_intro": "Вот твоя практика:",
         "start_btn": "▶️ Начать",
         "next_btn": "✓ Готово — дальше",
         "finish_btn": "🌿 Завершить",
-        "after_q": "Как ты сейчас после практики?",
+        "after_q": "Сделай паузу.\nПочувствуй стопы, дыхание и вес тела.\n\nЧто изменилось хотя бы на 1%?",
         "after_opts": [
-            "🌟 Стало легче", "🌊 Примерно так же",
-            "🌿 Нужно ещё", "📖 Записать в дневник"
+            "стало легче", "стало спокойнее", "больше чувствую тело",
+            "поднялась эмоция", "пока без изменений"
         ],
-        "diary_saved": "✅ Сохранено в твой дневник!\n\n_{date}_",
+        "diary_prompt": "Что тело сказало тебе сегодня?",
+        "diary_saved": "Спасибо.\nДаже “ничего не почувствовала” — это тоже наблюдение.",
         "again_btn": "🌊 Новая практика",
         "back_btn": "← Назад",
         "step_label": "Шаг {i} из {total}",
-        "type_state": "💬 Напиши как ты себя чувствуешь, и я подберу практику:",
+        "type_state": "Напиши, что сейчас происходит в теле — я подберу мягкую практику.",
         "voice_mode_on": "🔊 Голосом",
         "voice_mode_off": "📝 Текстом",
         "voice_enabled": "Хорошо, включаю голосовой режим.",
         "voice_unavailable": "Сейчас голос не получился, поэтому оставляю текст практики.",
+        "about": (
+            "*BodyWave* — это соматический бот про движение, эмоции и внутренний океан тела.\n\n"
+            "Он помогает мягко замечать, где живёт напряжение, как тело реагирует на эмоции "
+            "и какое движение сейчас нужно.\n\n"
+            "Здесь нет правильного или неправильного движения. Есть только честный контакт с собой."
+        ),
     },
     "en": {
         "welcome": (
@@ -141,32 +148,34 @@ T = {
             "For this moment, try the simplest thing: place your feet on the floor, name 5 things around "
             "you, and take one slow exhale."
         ),
-        "paths": ["🌿 How I feel now", "💧 What I feel", "🌺 I have a request"],
-        "p1_q": "Describe in a few words how you feel right now:\n_(type or choose below)_",
-        "p1_hints": ["Tired", "Anxious", "Angry", "Tense"],
-        "p2_q": "What are you feeling right now?\nChoose one or more:",
-        "emotions": [
-            "Anxiety 🌀", "Tiredness 🍂", "Anger 🌋", "Tension ⚡",
-            "Sadness 🌧", "Emptiness 🌫", "Stress 🌊", "Numbness 🪨"
+        "paths": [
+            "🌊 Find a practice", "🦶 Grounding", "🔥 Strong emotion",
+            "🫧 Soft movement", "📓 Body journal", "ℹ️ About BodyWave"
         ],
-        "p3_q": "What bothers you most right now?",
+        "p1_q": "What feels closest right now?",
+        "p1_hints": ["anxiety", "tiredness", "anger", "emptiness", "tension", "not sure"],
+        "p2_q": "Where do you feel it most in the body?",
+        "emotions": [
+            "anxiety", "tiredness", "anger", "emptiness", "tension", "not sure"
+        ],
+        "body_areas": ["chest", "belly", "shoulders / neck", "jaw", "pelvis", "legs", "not sure"],
+        "p3_q": "What quality does your body need?",
         "topics": [
-            "🌊 Work stress", "🌀 Anxiety", "🌺 Relationships",
-            "⚡ Body tension", "🌿 Just want to move"
+            "grounding", "softness", "release", "flow", "energy"
         ],
         "time_q": "How much time do you have?",
-        "times": ["🐚 5–10 min", "🌿 15–20 min", "🌊 30+ min"],
+        "times": ["3 min", "5 min", "10 min", "15 min"],
         "analyzing": "🌊 Finding your practice...",
         "practice_intro": "Here is your practice:",
         "start_btn": "▶️ Start",
         "next_btn": "✓ Done — next",
         "finish_btn": "🌿 Finish",
-        "after_q": "How do you feel after the practice?",
+        "after_q": "Pause.\nFeel your feet, breath, and body weight.\n\nWhat changed by even 1%?",
         "after_opts": [
-            "🌟 Feeling lighter", "🌊 About the same",
-            "🌿 Need more", "📖 Save to journal"
+            "lighter", "calmer", "more in my body", "emotion came up", "no change yet"
         ],
-        "diary_saved": "✅ Saved to your journal!\n\n_{date}_",
+        "diary_prompt": "What did your body tell you today?",
+        "diary_saved": "Thank you.\nEven “I felt nothing” is still an observation.",
         "again_btn": "🌊 New practice",
         "back_btn": "← Back",
         "step_label": "Step {i} of {total}",
@@ -175,6 +184,12 @@ T = {
         "voice_mode_off": "📝 Text",
         "voice_enabled": "Okay, voice mode is on.",
         "voice_unavailable": "Voice is unavailable right now, so I am showing the practice text.",
+        "about": (
+            "*BodyWave* is a somatic bot about movement, emotions, and the inner ocean of the body.\n\n"
+            "It helps you notice where tension lives, how the body responds to emotion, "
+            "and what kind of movement may be needed now.\n\n"
+            "There is no right or wrong movement here. Only honest contact with yourself."
+        ),
     }
 }
 
@@ -221,7 +236,8 @@ PRACTICES = {
                     ("Касание 🌿",
                      "Мягко *защипывай и приподнимай кожу* на руках, плечах — "
                      "освобождая фасцию под ней.\n\nЗатем мягко растягивай кожу от кончиков пальцев "
-                     "к плечу — к сердцу. Это активирует лимфоток."),
+                     "к плечу — к сердцу. Это может помочь почувствовать больше мягкости, течения "
+                     "и пространства под кожей."),
                     ("Интеграция 🐚",
                      "Замедлись. Почувствуй *лёгкость в теле*.\n\n"
                      "Лимфа учит различать своё и чужое — буквально и метафорически.\n"
@@ -796,6 +812,132 @@ MUSIC_PLAYLISTS = [
     }
 ]
 
+PRACTICE_UI = {
+    "grounding": {
+        "ru": ("🦶 Мягкая опора", "7 минут"),
+        "en": ("🦶 Soft grounding", "7 min"),
+        "emotion": ["тревога", "усталость", "напряжение", "anxiety", "tiredness", "tension"],
+        "body_area": ["ноги", "таз", "грудь", "legs", "pelvis", "chest"],
+        "duration": 5,
+        "quality": ["опора", "мягкость", "grounding", "softness"],
+    },
+    "lymph": {
+        "ru": ("🫧 Почувствовать течение", "10 минут"),
+        "en": ("🫧 Feel the flow", "10 min"),
+        "emotion": ["пустота", "усталость", "emptiness", "tiredness"],
+        "body_area": ["руки", "плечи", "грудь", "arms", "shoulders", "chest"],
+        "duration": 10,
+        "quality": ["течение", "мягкость", "flow", "softness"],
+    },
+    "inner_ocean_upper_body": {
+        "ru": ("🌊 Внутренний океан", "8 минут"),
+        "en": ("🌊 Inner ocean", "8 min"),
+        "emotion": ["напряжение", "тревога", "tension", "anxiety"],
+        "body_area": ["грудь", "плечи", "шея", "chest", "shoulders", "neck"],
+        "duration": 10,
+        "quality": ["мягкость", "течение", "softness", "flow"],
+    },
+    "inner_ocean_legs_pelvis": {
+        "ru": ("🦶 Опора через ноги и таз", "10 минут"),
+        "en": ("🦶 Support through legs and pelvis", "10 min"),
+        "emotion": ["тревога", "пустота", "напряжение", "anxiety", "emptiness", "tension"],
+        "body_area": ["ноги", "таз", "legs", "pelvis"],
+        "duration": 10,
+        "quality": ["опора", "течение", "grounding", "flow"],
+    },
+    "inner_ocean_blood_flow": {
+        "ru": ("🌊 Тёплый поток", "12 минут"),
+        "en": ("🌊 Warm flow", "12 min"),
+        "emotion": ["усталость", "пустота", "tiredness", "emptiness"],
+        "body_area": ["грудь", "руки", "chest", "arms"],
+        "duration": 10,
+        "quality": ["энергия", "течение", "energy", "flow"],
+    },
+    "inner_ocean_csf_rest": {
+        "ru": ("🫧 Тихая волна", "10 минут"),
+        "en": ("🫧 Quiet wave", "10 min"),
+        "emotion": ["тревога", "напряжение", "anxiety", "tension"],
+        "body_area": ["голова", "шея", "плечи", "челюсть", "head", "neck", "shoulders", "jaw"],
+        "duration": 10,
+        "quality": ["мягкость", "опора", "softness", "grounding"],
+    },
+    "body_component_awareness": {
+        "ru": ("🔥 Эмоция в теле", "10 минут"),
+        "en": ("🔥 Emotion in the body", "10 min"),
+        "emotion": ["злость", "напряжение", "тревога", "anger", "tension", "anxiety"],
+        "body_area": ["грудь", "живот", "челюсть", "плечи", "chest", "belly", "jaw", "shoulders"],
+        "duration": 10,
+        "quality": ["выпускание", "энергия", "release", "energy"],
+    },
+    "reich": {
+        "ru": ("🔥 Выпустить напряжение", "15 минут"),
+        "en": ("🔥 Release tension", "15 min"),
+        "emotion": ["злость", "напряжение", "anger", "tension"],
+        "body_area": ["челюсть", "плечи", "грудь", "живот", "jaw", "shoulders", "chest", "belly"],
+        "duration": 15,
+        "quality": ["выпускание", "энергия", "release", "energy"],
+    },
+    "five_rhythms": {
+        "ru": ("✨ Почувствовать себя живой", "15 минут"),
+        "en": ("✨ Feel alive", "15 min"),
+        "emotion": ["пустота", "усталость", "emptiness", "tiredness"],
+        "body_area": ["таз", "ноги", "тело", "pelvis", "legs", "body"],
+        "duration": 15,
+        "quality": ["энергия", "течение", "energy", "flow"],
+    },
+    "art_of_seeing_movement": {
+        "ru": ("🫧 Движение без оценки", "10 минут"),
+        "en": ("🫧 Movement without judgment", "10 min"),
+        "emotion": ["не знаю", "пустота", "напряжение", "unknown", "emptiness", "tension"],
+        "body_area": ["тело", "грудь", "ноги", "body", "chest", "legs"],
+        "duration": 10,
+        "quality": ["мягкость", "течение", "softness", "flow"],
+    },
+    "inner_ocean_pulsing": {
+        "ru": ("🌊 Волна через всё тело", "15 минут"),
+        "en": ("🌊 Whole-body wave", "15 min"),
+        "emotion": ["тревога", "усталость", "напряжение", "anxiety", "tiredness", "tension"],
+        "body_area": ["ноги", "таз", "позвоночник", "legs", "pelvis", "spine"],
+        "duration": 15,
+        "quality": ["опора", "течение", "grounding", "flow"],
+    },
+    "inner_ocean_hands_from_feet": {
+        "ru": ("🌊 Руки как волны от стоп", "15 минут"),
+        "emotion": ["тревога", "напряжение"],
+        "body_area": ["ноги", "плечи", "руки"],
+        "duration": 15,
+        "quality": ["течение", "мягкость"],
+    },
+    "inner_ocean_arterial_venous_capillary": {
+        "ru": ("🔥 Ритм и живость", "15 минут"),
+        "emotion": ["усталость", "пустота"],
+        "body_area": ["грудь", "живот", "руки"],
+        "duration": 15,
+        "quality": ["энергия", "течение"],
+    },
+    "inner_ocean_directness_points": {
+        "ru": ("✨ Ясность движения", "10 минут"),
+        "emotion": ["пустота", "напряжение"],
+        "body_area": ["живот", "таз", "ноги"],
+        "duration": 10,
+        "quality": ["энергия", "опора"],
+    },
+    "inner_ocean_muscle_in_fluid": {
+        "ru": ("🫧 Суставы как мягкое скольжение", "15 минут"),
+        "emotion": ["напряжение", "усталость"],
+        "body_area": ["плечи", "таз", "ноги"],
+        "duration": 15,
+        "quality": ["мягкость", "энергия"],
+    },
+    "inner_ocean_all_fluids_integration": {
+        "ru": ("🌊 Внутренние потоки", "15 минут"),
+        "emotion": ["не знаю", "пустота", "усталость"],
+        "body_area": ["грудь", "живот", "таз", "ноги"],
+        "duration": 15,
+        "quality": ["течение", "мягкость", "опора"],
+    },
+}
+
 # ── HELPERS ──────────────────────────────────────────────────────────────────
 def lang(ctx):
     return ctx.user_data.get("lang", "ru")
@@ -817,6 +959,27 @@ def kb(buttons, cols=1):
         rows.append(row)
     return InlineKeyboardMarkup(rows)
 
+def practice_meta(practice):
+    return PRACTICE_UI.get(practice.get("id", ""), {})
+
+def practice_display_title(practice, lang_code):
+    meta = practice_meta(practice)
+    if lang_code in meta:
+        return meta[lang_code][0]
+    return practice["title"]
+
+def practice_display_subtitle(practice, lang_code):
+    meta = practice_meta(practice)
+    if lang_code in meta:
+        return meta[lang_code][1]
+    subtitle = practice.get("subtitle", "")
+    subtitle = re.sub(r".*?·\s*", "", subtitle)
+    subtitle = subtitle.replace("занятие", "").replace("SDO", "").replace("А. Гиршон", "")
+    return subtitle.strip(" ·") or ("10 минут" if lang_code == "ru" else "10 min")
+
+def all_practices(lang_code):
+    return PRACTICES[lang_code]["mini"] + PRACTICES[lang_code]["full"]
+
 def paths_kb(ctx):
     paths = tx(ctx, "paths")
     return kb([(p, f"path_{i}") for i, p in enumerate(paths)], cols=1)
@@ -830,28 +993,23 @@ def practices_text(ctx):
 
     for section in ("mini", "full"):
         for practice in PRACTICES[l][section]:
-            lines.append(f"*{practice['title']}*")
-            lines.append(f"_{practice['subtitle']}_")
+            lines.append(f"*{practice_display_title(practice, l)}*")
+            lines.append(f"_{practice_display_subtitle(practice, l)}_")
             lines.append("")
 
     return "\n".join(lines).strip()
 
 def materials_text(ctx):
     if lang(ctx) == "en":
-        title = "BodyWave course materials:"
-        note = "Audio/video are listed as source materials; bot practices are based on chats and available PDFs."
+        return (
+            "BodyWave is built from somatic movement, breath, imagery, and body awareness.\n\n"
+            "Use the menu to choose a practice by feeling, body area, or time."
+        )
     else:
-        title = "Материалы курса BodyWave:"
-        note = "Аудио/видео сохранены как источники; практики бота собраны по чатам и доступным PDF."
-
-    lines = [title, ""]
-    for material in COURSE_MATERIALS:
-        lines.append(material["lesson"])
-        lines.append(", ".join(material["items"]))
-        lines.append(material["folder"])
-        lines.append("")
-    lines.append(note)
-    return "\n".join(lines).strip()
+        return (
+            "BodyWave собран из соматического движения, дыхания, образов и внимания к телу.\n\n"
+            "Выбери практику через меню: по состоянию, месту в теле или времени."
+        )
 
 def music_text(ctx):
     if lang(ctx) == "en":
@@ -933,6 +1091,9 @@ def recorded_full_practice_path(ctx, practice):
     return None
 
 def practice_duration_minutes(practice):
+    meta_duration = practice_meta(practice).get("duration")
+    if meta_duration:
+        return int(meta_duration)
     text = f"{practice.get('title', '')} {practice.get('subtitle', '')}"
     match = re.search(r"(\d+)\s*(?:мин|min)", text, re.IGNORECASE)
     if match:
@@ -992,7 +1153,13 @@ def full_practice_voice_text(ctx, practice):
             "если нужно, включи таймер рядом."
         )
 
-    lines = [practice["title"], practice["subtitle"], intro, ""]
+    lang_code = lang(ctx)
+    lines = [
+        practice_display_title(practice, lang_code),
+        practice_display_subtitle(practice, lang_code),
+        intro,
+        "",
+    ]
     for idx, ((title, body), minutes) in enumerate(zip(practice["steps"], durations), start=1):
         step_label = tx(ctx, "step_label", i=idx, total=len(practice["steps"]))
         lines.append(f"{step_label}. {title}.")
@@ -1028,13 +1195,13 @@ async def send_continuous_practice(query, ctx, practice):
     l = lang(ctx)
     if l == "en":
         intro = "I am sending the whole practice as one continuous audio."
-        caption = f"Continuous practice: {practice['title']}"
+        caption = f"Continuous practice: {practice_display_title(practice, l)}"
     else:
         intro = "Отправляю всю практику одним непрерывным аудио."
-        caption = f"Непрерывная практика: {practice['title']}"
+        caption = f"Непрерывная практика: {practice_display_title(practice, l)}"
 
     await query.edit_message_text(
-        f"*{practice['title']}*\n_{practice['subtitle']}_\n\n{intro}",
+        f"*{practice_display_title(practice, l)}*\n_{practice_display_subtitle(practice, l)}_\n\n{intro}",
         parse_mode="Markdown"
     )
 
@@ -1071,28 +1238,45 @@ def looks_urgent(text):
     return any(word in lowered for word in urgent_words)
 
 def pick_practice(user_state, lang_code):
-    """Pick best practice based on user state using AI."""
-    pracs = PRACTICES[lang_code]
-    emotion = user_state.get("emotion", "")
-    topic = user_state.get("topic", "")
+    """Pick a practice by emotion, body area, available time, and movement quality."""
+    emotion = user_state.get("emotion", "").lower()
+    body_area = user_state.get("body_area", "").lower()
+    quality = user_state.get("quality", user_state.get("topic", "")).lower()
     time_choice = user_state.get("time", "")
+    duration_match = re.search(r"\d+", time_choice)
+    requested_duration = int(duration_match.group(0)) if duration_match else 10
 
-    # Determine mini vs full
-    is_full = "30" in time_choice or topic != ""
-
-    pool = pracs["full"] if is_full else pracs["mini"]
-
-    # Simple tag matching
-    query = (emotion + " " + topic).lower()
+    pool = all_practices(lang_code)
     best = pool[0]
-    best_score = 0
-    for p in pool:
-        score = sum(1 for tag in p["tags"] if tag in query)
+    best_score = -100
+
+    for practice in pool:
+        meta = practice_meta(practice)
+        searchable_tags = [tag.lower() for tag in practice.get("tags", [])]
+        score = 0
+
+        if emotion and emotion != "не знаю":
+            if emotion in [item.lower() for item in meta.get("emotion", [])] or emotion in searchable_tags:
+                score += 4
+
+        if body_area and body_area != "не знаю":
+            normalized_body = body_area.replace(" / ", " ").replace("/", " ")
+            body_tags = " ".join(item.lower() for item in meta.get("body_area", []))
+            if any(part in body_tags for part in normalized_body.split()):
+                score += 3
+
+        if quality:
+            if quality in [item.lower() for item in meta.get("quality", [])] or quality in searchable_tags:
+                score += 2
+
+        practice_duration = practice_duration_minutes(practice)
+        score -= abs(practice_duration - requested_duration) * 0.35
+
         if score > best_score:
             best_score = score
-            best = p
+            best = practice
 
-    return best, "full" if is_full else "mini"
+    return best, "practice"
 
 # ── HANDLERS ─────────────────────────────────────────────────────────────────
 async def start(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
@@ -1115,6 +1299,9 @@ async def menu(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
 
 async def help_command(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(tx(ctx, "help"), parse_mode="Markdown")
+
+async def about_command(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
+    await update.message.reply_text(tx(ctx, "about"), parse_mode="Markdown")
 
 async def practices_command(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(practices_text(ctx), parse_mode="Markdown")
@@ -1185,47 +1372,49 @@ async def button(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
     elif data.startswith("path_"):
         path = int(data.split("_")[1])
         ctx.user_data["path"] = path
-        l = lang(ctx)
 
-        if path == 0:  # How I feel now — free text
-            ctx.user_data["awaiting_text"] = True
-            hints = tx(ctx, "p1_hints")
-            hint_kb = kb([(h, f"hint_{h}") for h in hints], cols=2)
-            await query.edit_message_text(
-                tx(ctx, "p1_q"),
-                parse_mode="Markdown",
-                reply_markup=hint_kb
-            )
+        if path == 0:  # подобрать практику
+            await show_emotion_picker(query, ctx)
 
-        elif path == 1:  # What I feel — emotions
-            emotions = tx(ctx, "emotions")
-            emo_kb = kb([(e, f"emo_{e}") for e in emotions], cols=2)
-            await query.edit_message_text(
-                tx(ctx, "p2_q"),
-                parse_mode="Markdown",
-                reply_markup=emo_kb
-            )
+        elif path == 1:  # опора
+            ctx.user_data["quality"] = "опора"
+            ctx.user_data["emotion"] = "тревога"
+            await show_body_picker(query, ctx)
 
-        elif path == 2:  # I have a request — topics
-            topics = tx(ctx, "topics")
-            topic_kb = kb([(t, f"topic_{i}") for i, t in enumerate(topics)], cols=1)
-            await query.edit_message_text(
-                tx(ctx, "p3_q"),
-                parse_mode="Markdown",
-                reply_markup=topic_kb
-            )
+        elif path == 2:  # сильная эмоция
+            ctx.user_data["quality"] = "выпускание"
+            await show_emotion_picker(query, ctx)
+
+        elif path == 3:  # мягкое движение
+            ctx.user_data["quality"] = "мягкость"
+            ctx.user_data["emotion"] = "не знаю"
+            await show_body_picker(query, ctx)
+
+        elif path == 4:  # дневник тела
+            diary_kb = kb([(o, f"after_{i}") for i, o in enumerate(tx(ctx, "after_opts"))], cols=1)
+            await query.edit_message_text(tx(ctx, "diary_prompt"), reply_markup=diary_kb)
+
+        elif path == 5:  # о BodyWave
+            await query.edit_message_text(tx(ctx, "about"), parse_mode="Markdown", reply_markup=paths_kb(ctx))
 
     # ── Hint (quick emotion) ──
     elif data.startswith("hint_"):
         emotion = data[5:]
         ctx.user_data["emotion"] = emotion
         ctx.user_data["awaiting_text"] = False
-        await show_time_picker(query, ctx)
+        await show_body_picker(query, ctx)
 
     # ── Emotion selected ──
     elif data.startswith("emo_"):
         emotion = data[4:]
         ctx.user_data["emotion"] = emotion
+        await show_body_picker(query, ctx)
+
+    # ── Body area selected ──
+    elif data.startswith("body_"):
+        idx = int(data.split("_")[1])
+        areas = tx(ctx, "body_areas")
+        ctx.user_data["body_area"] = areas[idx]
         await show_time_picker(query, ctx)
 
     # ── Topic selected ──
@@ -1246,8 +1435,7 @@ async def button(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
     elif data.startswith("start_"):
         prac_id = data[6:]
         l = lang(ctx)
-        all_pracs = PRACTICES[l]["mini"] + PRACTICES[l]["full"]
-        practice = next((p for p in all_pracs if p["id"] == prac_id), None)
+        practice = next((p for p in all_practices(l) if p["id"] == prac_id), None)
         if practice:
             ctx.user_data["practice"] = practice
             ctx.user_data["step"] = 0
@@ -1257,8 +1445,7 @@ async def button(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
     elif data.startswith("voice_start_"):
         prac_id = data[12:]
         l = lang(ctx)
-        all_pracs = PRACTICES[l]["mini"] + PRACTICES[l]["full"]
-        practice = next((p for p in all_pracs if p["id"] == prac_id), None)
+        practice = next((p for p in all_practices(l) if p["id"] == prac_id), None)
         if practice:
             ctx.user_data["voice_mode"] = True
             ctx.user_data["practice"] = practice
@@ -1278,18 +1465,7 @@ async def button(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
     # ── After practice ──
     elif data.startswith("after_"):
         idx = int(data.split("_")[1])
-        opts = tx(ctx, "after_opts")
-        chosen = opts[idx]
-
-        if idx == 3:  # Save to diary
-            from datetime import date
-            d = date.today().strftime("%d.%m.%Y")
-            practice = ctx.user_data.get("practice", {})
-            text = tx(ctx, "diary_saved", date=d)
-            text += f"\n\n*{practice.get('title', '')}*"
-        else:
-            text = chosen
-
+        text = tx(ctx, "diary_saved")
         restart_kb = kb([(tx(ctx, "again_btn"), "restart")], cols=1)
         await query.edit_message_text(text, parse_mode="Markdown", reply_markup=restart_kb)
 
@@ -1298,6 +1474,8 @@ async def button(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
         ctx.user_data.pop("practice", None)
         ctx.user_data.pop("step", None)
         ctx.user_data.pop("emotion", None)
+        ctx.user_data.pop("body_area", None)
+        ctx.user_data.pop("quality", None)
         ctx.user_data.pop("topic", None)
         ctx.user_data.pop("time", None)
         await query.edit_message_text(
@@ -1305,6 +1483,16 @@ async def button(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
             parse_mode="Markdown",
             reply_markup=paths_kb(ctx)
         )
+
+async def show_emotion_picker(query, ctx):
+    emotions = tx(ctx, "emotions")
+    emo_kb = kb([(e, f"emo_{e}") for e in emotions], cols=2)
+    await query.edit_message_text(tx(ctx, "p1_q"), reply_markup=emo_kb)
+
+async def show_body_picker(query, ctx):
+    areas = tx(ctx, "body_areas")
+    body_kb = kb([(area, f"body_{i}") for i, area in enumerate(areas)], cols=2)
+    await query.edit_message_text(tx(ctx, "p2_q"), reply_markup=body_kb)
 
 async def show_time_picker(query, ctx):
     times = tx(ctx, "times")
@@ -1322,8 +1510,8 @@ async def show_practice_choice(query, ctx):
 
     text = (
         f"{tx(ctx, 'practice_intro')}\n\n"
-        f"*{practice['title']}*\n"
-        f"_{practice['subtitle']}_"
+        f"*{practice_display_title(practice, l)}*\n"
+        f"_{practice_display_subtitle(practice, l)}_"
     )
     start_kb = kb([
         (tx(ctx, "start_btn"), f"start_{practice['id']}"),
@@ -1397,10 +1585,11 @@ async def handle_text(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
 
         language_name = "русском" if l == "ru" else "English"
         system = (
-            "Ты помощник по танцевально-двигательной терапии. "
+            "Ты мягкий соматический помощник BodyWave. "
             "Пользователь описал своё состояние. "
-            "Ответь одним коротким тёплым предложением — что ты слышишь в его словах. "
-            "Затем скажи что подберёшь подходящую практику. "
+            "Ответь 1-2 короткими тёплыми фразами: что можно заметить в теле, без диагнозов и обещаний лечения. "
+            "Затем скажи, что подберёшь мягкую практику. "
+            "Не используй слова: диагноз, блок, травма, лечение, психосоматика. "
             "Отвечай на языке: " + language_name
         )
         response = anthropic_client.messages.create(
@@ -1427,6 +1616,7 @@ def main():
     app.add_handler(CommandHandler("start", start))
     app.add_handler(CommandHandler("menu", menu))
     app.add_handler(CommandHandler("help", help_command))
+    app.add_handler(CommandHandler("about", about_command))
     app.add_handler(CommandHandler("practices", practices_command))
     app.add_handler(CommandHandler("materials", materials_command))
     app.add_handler(CommandHandler("music", music_command))
