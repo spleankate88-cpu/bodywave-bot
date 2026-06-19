@@ -1929,8 +1929,10 @@ async def button(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
 
     # ── Toggle voice/text mode ──
     elif data == "toggle_voice":
-        ctx.user_data["voice_mode"] = not ctx.user_data.get("voice_mode", False)
-        await show_step(query, ctx)
+        practice = ctx.user_data.get("practice")
+        if practice:
+            ctx.user_data["voice_mode"] = True
+            await send_continuous_practice(query, ctx, practice)
 
     # ── After practice ──
     elif data.startswith("after_"):
@@ -2026,21 +2028,7 @@ async def show_step(query, ctx):
         (voice_btn, "toggle_voice"),
     ], cols=1)
 
-    if ctx.user_data.get("voice_mode"):
-        short_text = f"_{step_label}_ {progress}\n\n*{title}*"
-        await query.edit_message_text(short_text, parse_mode="Markdown", reply_markup=step_kb)
-        await query.message.reply_text("🔊 Отправляю аудио..." if lang(ctx) == "ru" else "🔊 Sending audio...")
-        audio_path = recorded_audio_path(ctx, practice, step_idx)
-        if audio_path:
-            ok = await send_recorded_audio(query.message.chat, ctx, audio_path, caption=title)
-        else:
-            voice_text = f"{step_label}. {title}. {body}"
-            ok = await send_voice_audio(query.message.chat, ctx, voice_text, caption=title)
-        if not ok:
-            await query.message.reply_text(tx(ctx, "voice_unavailable"))
-            await query.message.reply_text(text, parse_mode="Markdown", reply_markup=step_kb)
-    else:
-        await query.edit_message_text(text, parse_mode="Markdown", reply_markup=step_kb)
+    await query.edit_message_text(text, parse_mode="Markdown", reply_markup=step_kb)
 
 async def handle_text(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
     """Handle free text input for state description."""
